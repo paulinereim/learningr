@@ -156,3 +156,50 @@ NHANES_modified <- NHANES_snakecase %>%
 
 NHANES_modified %>%
     select(mean_arterial_pressure, young_child)
+
+
+
+# Calculating summary statistics ------------------------------------------
+
+NHANES_snakecase %>%
+    summarise(max_bmi = max(bmi, na.rm = TRUE))
+
+results <- NHANES_snakecase %>%
+    summarise(max_bmi = max(bmi, na.rm = TRUE),
+              min_bmi = min(bmi, na.rm =TRUE))
+
+
+
+# Summary statistics by a group -------------------------------------------
+
+NHANES_snakecase %>%
+    group_by(diabetes) %>%
+    summarise(mean_age = mean(age, na.rm = TRUE),
+              mean_bmi = mean(bmi, na.rm = TRUE))
+
+# Excluding NA values for diabetes
+
+NHANES_snakecase %>%
+    filter(!is.na(diabetes)) %>%
+    group_by(diabetes) %>%
+    summarise(mean_age = mean(age, na.rm = TRUE),
+              mean_bmi = mean(bmi, na.rm = TRUE))
+
+NHANES_snakecase %>%
+    filter(!is.na(diabetes)) %>%
+    group_by(diabetes, phys_active) %>%
+    summarise(mean_age = mean(age, na.rm = TRUE),
+              mean_bmi = mean(bmi, na.rm = TRUE)) %>%
+    ungroup()
+
+# always remember to run the ungroup function after using the group_by function
+
+
+
+# Saving data set as a file ------------------------------------------------
+
+
+readr::write_csv(NHANES_snakecase,
+                 here::here("data/NHANES_snakecase.csv"))
+
+

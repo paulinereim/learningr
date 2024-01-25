@@ -72,14 +72,14 @@ NHANES_snakecase %>%
     mean_bmi = round(mean_bmi, digits = 1),
     # Task 2b.
     education = str_to_sentence(education)
-  ) %>% 
+  ) %>%
   rename(
     # Task 3.
     "Mean Age" = mean_age,
     "Mean BMI" = mean_bmi,
     "Education" = education,
     "Diabetes Status" = diabetes
-  ) %>% 
+  ) %>%
   knitr::kable(caption = "Mean values of Age and BMI")
 ```
 
@@ -95,10 +95,10 @@ NHANES_snakecase %>%
 #| echo: false
 #| fig-cap: "Distribution of BMI"
 #| label: fig-bmi-histo
-NHANES_snakecase %>% 
-    filter(bmi <= 60) %>% 
-    ggplot(aes(x = bmi)) + 
-    geom_histogram(na.rm = TRUE)
+NHANES_snakecase %>%
+  filter(bmi <= 60) %>%
+  ggplot(aes(x = bmi)) +
+  geom_histogram(na.rm = TRUE)
 ```
 
 ### One variable plot - discrete/categorical variable
@@ -107,40 +107,39 @@ NHANES_snakecase %>%
 #| echo: false
 #| label: fig-diabetes-education-bar
 #| fig-cap: "Count of education and diabetes"
-#| fig-subcap: 
-#| - "Distribution of education levels" 
+#| fig-subcap:
+#| - "Distribution of education levels"
 #| - "Number of participants with or without diabetes"
 #| layout-ncol: 2
-NHANES_snakecase %>% 
-    filter(!is.na(education)) %>% 
-    ggplot(aes(x = education)) +
-    geom_bar()
+NHANES_snakecase %>%
+  filter(!is.na(education)) %>%
+  ggplot(aes(x = education)) +
+  geom_bar()
 
-NHANES_snakecase %>% 
-    filter(!is.na(diabetes)) %>% 
-    ggplot(aes(x = diabetes)) +
-    geom_bar()
+NHANES_snakecase %>%
+  filter(!is.na(diabetes)) %>%
+  ggplot(aes(x = diabetes)) +
+  geom_bar()
 ```
 
 ### Plotting two variables - continous variable
 
 ```{r}
 #| echo: false
-NHANES_snakecase %>% 
-    ggplot(aes(x = bmi, y = bp_sys_ave)) +
-    geom_hex(na.rm = TRUE) +
-    geom_smooth(na.rm = TRUE)
+NHANES_snakecase %>%
+  ggplot(aes(x = bmi, y = bp_sys_ave)) +
+  geom_hex(na.rm = TRUE) +
+  geom_smooth(na.rm = TRUE)
 ```
 
 ### Plotting two variables - discrete/catergorical variable
 
 ```{r}
 #| echo: false
-NHANES_snakecase %>% 
-    filter(!is.na(education), !is.na(diabetes)) %>% 
-    ggplot(aes(x = diabetes, fill = education)) +
-    geom_bar(position = position_dodge())
-    
+NHANES_snakecase %>%
+  filter(!is.na(education), !is.na(diabetes)) %>%
+  ggplot(aes(x = diabetes, fill = education)) +
+  geom_bar(position = position_dodge())
 ```
 
 ### Plotting discrete and continous variables
@@ -148,9 +147,8 @@ NHANES_snakecase %>%
 ```{r}
 #| echo: false
 #| warning: false
-NHANES_snakecase %>% 
-    filter(!is.na(diabetes), bmi <= 60) %>% 
-    ggplot(aes(x = diabetes, y = bmi)) +
-    geom_violin(na.rm = TRUE)
+NHANES_snakecase %>%
+  filter(!is.na(diabetes), bmi <= 60) %>%
+  ggplot(aes(x = diabetes, y = bmi)) +
+  geom_violin(na.rm = TRUE)
 ```
-

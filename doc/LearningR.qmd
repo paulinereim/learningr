@@ -268,3 +268,27 @@ NHANES_snakecase %>%
                cols = vars(education))
 ```
 
+## Exercise 9.8
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: diabetes-education-colourblind
+#| fig-cap: "Relation between diabetes and education - colour blind"
+NHANES_snakecase %>%
+  filter(!is.na(diabetes), !is.na(education)) %>% 
+  ggplot(aes(x = diabetes, fill = education)) +
+  geom_bar(position = position_dodge()) +
+  scale_fill_viridis_d(option = "cividis")
+```
+```{r}
+#| echo: false
+#| warning: false
+#| label: bmi-age-bp
+#| fig-cap: "Relation between BMI, blood pressure and age - colour blind"
+NHANES_snakecase %>%
+  ggplot(aes(x = bmi, y = bp_sys_ave, colour = age)) +
+  geom_point(na.rm = TRUE) +
+  scale_colour_viridis_c(option = "inferno")
+```
+

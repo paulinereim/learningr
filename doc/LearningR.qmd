@@ -1,7 +1,9 @@
 ---
 title: "Reproducible documents"
 author: "Pauline Reim"
-format: html
+format: 
+    html: 
+        theme: yeti 
 ---
 
 1. Pauline Reim
@@ -79,5 +81,76 @@ NHANES_snakecase %>%
     "Diabetes Status" = diabetes
   ) %>% 
   knitr::kable(caption = "Mean values of Age and BMI")
+```
+
+# Placenta dipped in red and blue paint @fig-Placenta
+
+![Image by Michael McMaster from New York Times.](images/placenta.PNG){#fig-Placenta width="50%" height="50%" fig-align="left"}
+
+
+### One variable plot - continuous variable
+
+```{r}
+#| message: false
+#| echo: false
+#| fig-cap: "Distribution of BMI"
+#| label: fig-bmi-histo
+NHANES_snakecase %>% 
+    filter(bmi <= 60) %>% 
+    ggplot(aes(x = bmi)) + 
+    geom_histogram(na.rm = TRUE)
+```
+
+### One variable plot - discrete/categorical variable
+
+```{r}
+#| echo: false
+#| label: fig-diabetes-education-bar
+#| fig-cap: "Count of education and diabetes"
+#| fig-subcap: 
+#| - "Distribution of education levels" 
+#| - "Number of participants with or without diabetes"
+#| layout-ncol: 2
+NHANES_snakecase %>% 
+    filter(!is.na(education)) %>% 
+    ggplot(aes(x = education)) +
+    geom_bar()
+
+NHANES_snakecase %>% 
+    filter(!is.na(diabetes)) %>% 
+    ggplot(aes(x = diabetes)) +
+    geom_bar()
+```
+
+### Plotting two variables - continous variable
+
+```{r}
+#| echo: false
+NHANES_snakecase %>% 
+    ggplot(aes(x = bmi, y = bp_sys_ave)) +
+    geom_hex(na.rm = TRUE) +
+    geom_smooth(na.rm = TRUE)
+```
+
+### Plotting two variables - discrete/catergorical variable
+
+```{r}
+#| echo: false
+NHANES_snakecase %>% 
+    filter(!is.na(education), !is.na(diabetes)) %>% 
+    ggplot(aes(x = diabetes, fill = education)) +
+    geom_bar(position = position_dodge())
+    
+```
+
+### Plotting discrete and continous variables
+
+```{r}
+#| echo: false
+#| warning: false
+NHANES_snakecase %>% 
+    filter(!is.na(diabetes), bmi <= 60) %>% 
+    ggplot(aes(x = diabetes, y = bmi)) +
+    geom_violin(na.rm = TRUE)
 ```
 

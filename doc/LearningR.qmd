@@ -152,3 +152,119 @@ NHANES_snakecase %>%
   ggplot(aes(x = diabetes, y = bmi)) +
   geom_violin(na.rm = TRUE)
 ```
+
+## Exercise 9.5
+
+```{r}
+#| echo: false
+library(NHANES)
+nhanes_exercise <- NHANES %>%
+  rename_with(snakecase::to_snake_case)
+```
+
+```{r}
+#| echo: false
+#| waning: false
+#| layout-ncol: 2
+#| label: age-diabetes-age
+#| fig-cap: "Age at baseline and age at diabetes diagnosis"
+#| fig-subcap: 
+#|   - "Distribution of age"
+#|   - "Distribution of age at diabetes diagnosis"
+
+nhanes_exercise %>% 
+  ggplot(aes(x = age)) +
+    geom_density(na.rm = TRUE)
+
+
+nhanes_exercise %>% 
+  ggplot(aes(x = diabetes_age)) +
+    geom_density(na.rm = TRUE)
+```
+
+
+```{r}
+#| echo: false
+#| label: smoke-now-bar
+#| fig-cap: "Current smokers above age 20"
+nhanes_exercise %>% 
+  filter(age >= 20, !is.na(smoke_now)) %>% 
+  ggplot(aes(x = smoke_now)) +
+  geom_bar()
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: map-bmi-plot
+#| fig-cap: "MAP in relation to BMI"
+
+nhanes_exercise %>% 
+  mutate(mean_arterial_pressure = (bp_sys_ave + (2 * bp_dia_ave)) / 3) %>% 
+  ggplot(aes(x = bmi, y = mean_arterial_pressure )) +
+  geom_hex(na.rm = TRUE) +
+  geom_smooth()
+```
+
+### Visualizing three or more variables
+
+```{r}
+#| echo: false
+#| label: diabetes-education-bp
+#| fig-cap: "Relationship between diabetes, education and blood pressure"
+NHANES_snakecase %>% 
+    filter(!is.na(diabetes), !is.na(education)) %>% 
+    ggplot(aes(x = education, 
+               y = bp_sys_ave, 
+               colour = diabetes)) +
+    geom_boxplot(na.rm = TRUE)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: bmi-bp-age
+#| fig-cap: "Relation between BMI, blood pressure and age"
+NHANES_snakecase %>% 
+    ggplot(aes(x = bmi, y = bp_sys_ave, colour = age)) +
+    geom_point(na.rm = TRUE)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: bmi-bp-diabetes
+#| fig-cap: "Relation between BMI, blood pressure and diabetes"
+NHANES_snakecase %>% 
+    filter(!is.na(diabetes)) %>% 
+    ggplot(aes(x = bmi, y = bp_sys_ave, colour = diabetes)) +
+    geom_point(na.rm = TRUE)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: bmi-bp-diabetes-facet
+#| fig-cap: "Relation between BMI and blood pressure according to diabetes status"
+NHANES_snakecase %>% 
+    filter(!is.na(diabetes)) %>% 
+    ggplot(aes(x = bmi, y = bp_sys_ave)) +
+    geom_point(na.rm = TRUE) +
+    facet_grid(cols = vars(diabetes))
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| label: bmi-bp-diabetes-age-education-facet
+#| fig-cap: "Relation between BMI, blood pressure and age according to diabetes status and education"
+NHANES_snakecase %>% 
+    filter(!is.na(diabetes), !is.na(education)) %>% 
+    ggplot(aes(x = bmi, 
+               y = bp_sys_ave,
+               colour = age)) +
+    geom_point(na.rm = TRUE) +
+    facet_grid(rows = vars(diabetes), 
+               cols = vars(education))
+```
+
